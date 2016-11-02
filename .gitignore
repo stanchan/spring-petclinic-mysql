@@ -1,0 +1,11 @@
+.settings/*
+.classpath
+.project
+.idea
+*.iml
+target/*
+/target
+petclinic/target/*
+petclinic/target
+petclinic-db/target/*
+petclinic-db/target

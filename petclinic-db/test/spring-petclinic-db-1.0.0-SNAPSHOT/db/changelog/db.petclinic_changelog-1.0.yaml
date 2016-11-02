@@ -1,0 +1,314 @@
+databaseChangeLog:
+  - preConditions:
+      - runningAs:
+         username: pc
+
+  - changeSet:
+      id: createTable-vets
+      author: stchan
+      changes:
+        - createTable:
+            catalogName: petclinic
+            tableName: vets
+            columns:
+              - column:
+                  name: id
+                  type: int(4) unsigned
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: first_name
+                  type: varchar(30)
+              - column:
+                  name: last_name
+                  type: varchar(30)
+
+  - changeSet:
+      id: createTable-specialties
+      author: stchan
+      changes:
+        - createTable:
+            catalogName: petclinic
+            tableName: specialties
+            columns:
+              - column:
+                  name: id
+                  type: int(4) unsigned
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: name
+                  type: varchar(80)
+
+  - changeSet:
+      id: createTable-vet_specialties
+      author: stchan
+      changes:
+        - createTable:
+            catalogName: petclinic
+            tableName: vet_specialties
+            columns:
+              - column:
+                  name: vet_id
+                  type: int(4) unsigned
+                  constraints:
+                    nullable: false
+              - column:
+                  name: specialty_id
+                  type: int(4) unsigned
+                  constraints:
+                    nullable: false
+
+  - changeSet:
+      id: createTable-types
+      author: stchan
+      changes:
+         - createTable:
+             catalogName: petclinic
+             tableName: types
+             columns:
+               - column:
+                   name: id
+                   type: int(4) unsigned
+                   autoIncrement: true
+                   constraints:
+                     primaryKey: true
+               - column:
+                   name: name
+                   type: varchar(80)
+
+  - changeSet:
+      id: createTable-owners
+      author: stchan
+      changes:
+        - createTable:
+            tableName: owners
+            columns:
+              - column:
+                  name: id
+                  type: int(4) unsigned
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: first_name
+                  type: varchar(30)
+              - column:
+                  name: last_name
+                  type: varchar(30)
+              - column:
+                  name: address
+                  type: varchar(255)
+              - column:
+                  name: city
+                  type: varchar(80)
+              - column:
+                  name: telephone
+                  type: varchar(20)
+
+  - changeSet:
+      id: createTable-pets
+      author: stchan
+      changes:
+        - createTable:
+            catalogName: petclinic
+            tableName: pets
+            columns:
+              - column:
+                  name: id
+                  type: int(4) unsigned
+                  autoIncrement: true
+                  constraints:
+                     primaryKey: true
+              - column:
+                  name: name
+                  type: varchar(30)
+              - column:
+                  name: birth_date
+                  type: date
+              - column:
+                  name: type_id
+                  type: int(4) unsigned
+                  constraints:
+                    nullable: false
+              - column:
+                  name: owner_id
+                  type: int(4) unsigned
+                  constraints:
+                    nullable: false
+
+  - changeSet:
+      id: createTable-visits
+      author: stchan
+      changes:
+        - createTable:
+            catalogName: petclinic
+            tableName: visits
+            columns:
+              - column:
+                  name: id
+                  type: int(4) unsigned
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: pet_id
+                  type: int(4) unsigned
+                  constraints:
+                    nullable: false
+              - column:
+                  name: visit_date
+                  type: date
+              - column:
+                  name: description
+                  type: varchar(255)
+
+  - changeSet:
+      id: addForeignKeyConstraint-pets_ibfk_1
+      author: stchan
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: owner_id
+            baseTableName: pets
+            constraintName: pets_ibfk_1
+            deferrable: false
+            initiallyDeferred: false
+            onDelete: NO ACTION
+            onUpdate: NO ACTION
+            referencedColumnNames: id
+            referencedTableName: owners
+
+  - changeSet:
+      id: addForeignKeyConstraint-pets_ibfk_2
+      author: stchan
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: type_id
+            baseTableName: pets
+            constraintName: pets_ibfk_2
+            deferrable: false
+            initiallyDeferred: false
+            onDelete: NO ACTION
+            onUpdate: NO ACTION
+            referencedColumnNames: id
+            referencedTableName: types
+
+  - changeSet:
+      id: addForeignKeyConstraint-vet_specialties_ibfk_1
+      author: stchan
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: vet_id
+            baseTableName: vet_specialties
+            constraintName: vet_specialties_ibfk_1
+            deferrable: false
+            initiallyDeferred: false
+            onDelete: NO ACTION
+            onUpdate: NO ACTION
+            referencedColumnNames: id
+            referencedTableName: vets
+
+  - changeSet:
+      id: addForeignKeyConstraint-vet_specialties_ibfk_2
+      author: stchan
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: vet_id
+            baseTableName: vet_specialties
+            constraintName: vet_specialties_ibfk_2
+            deferrable: false
+            initiallyDeferred: false
+            onDelete: NO ACTION
+            onUpdate: NO ACTION
+            referencedColumnNames: id
+            referencedTableName: specialties
+
+  - changeSet:
+      id: addForeignKeyConstraint-visits_ibfk_1
+      author: stchan
+      changes:
+      - addForeignKeyConstraint:
+          baseColumnNames: pet_id
+          baseTableName: visits
+          constraintName: visits_ibfk_1
+          deferrable: false
+          initiallyDeferred: false
+          onDelete: NO ACTION
+          onUpdate: NO ACTION
+          referencedColumnNames: id
+          referencedTableName: pets
+
+  - changeSet:
+      id: addUniqueConstraint-vet_id
+      author: liquibase-docs
+      changes:
+        - addUniqueConstraint:
+            columnNames: vet_id, specialty_id
+            constraintName: vet_id
+            deferrable: false
+            disabled: false
+            initiallyDeferred: false
+            tableName: vet_specialties
+
+  - changeSet:
+      id: createIndex-vets-last_name
+      author: stchan
+      changes:
+        - createIndex:
+            columns:
+              - column:
+                  name: last_name
+            indexName: last_name
+            tableName: vets
+            unique: false
+
+  - changeSet:
+      id: createIndex-specialties-name
+      author: stchan
+      changes:
+        - createIndex:
+            columns:
+              - column:
+                  name: name
+            indexName: name
+            tableName: specialties
+            unique: false
+
+  - changeSet:
+      id: createIndex-types-name
+      author: stchan
+      changes:
+        - createIndex:
+            columns:
+              - column:
+                  name: name
+            indexName: name
+            tableName: types
+            unique: false
+
+  - changeSet:
+      id: createIndex-owners-last_name
+      author: stchan
+      changes:
+        - createIndex:
+            columns:
+              - column:
+                  name: last_name
+            indexName: last_name
+            tableName: owners
+            unique: false
+
+  - changeSet:
+      id: createIndex-pets-name
+      author: stchan
+      changes:
+        - createIndex:
+            columns:
+              - column:
+                  name: name
+            indexName: name
+            tableName: pets
+            unique: false

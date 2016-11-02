@@ -1,0 +1,95 @@
+databaseChangeLog:
+  - preConditions:
+      - runningAs:
+         username: pc
+
+  - changeSet:
+      id: loadData-vets
+      author: stchan
+      preConditions:
+        - tableExists: 
+            tableName: vets
+      changes:
+        - loadData:
+            encoding: UTF-8
+            file: db/changelog/vets.csv
+            separator: ','
+            tableName: vets
+
+  - changeSet:
+      id: loadData-specialties
+      author: stchan
+      preConditions:
+        - tableExists: 
+            tableName: specialties
+      changes:
+        - loadData:
+            encoding: UTF-8
+            file: db/changelog/specialties.csv
+            separator: ','
+            tableName: specialties
+
+  - changeSet:
+      id: loadData-vet_specialties
+      author: stchan
+      preConditions:
+        - tableExists: 
+            tableName: vet_specialties
+      changes:
+        - loadData:
+            encoding: UTF-8
+            file: db/changelog/vet_specialties.csv
+            separator: ','
+            tableName: vet_specialties
+
+  - changeSet:
+      id: loadData-types
+      author: stchan
+      preConditions:
+        - tableExists: 
+            tableName: types
+      changes:
+        - loadData:
+            encoding: UTF-8
+            file: db/changelog/types.csv
+            separator: ','
+            tableName: types
+
+  - changeSet:
+      id: loadData-owners
+      author: stchan
+      preConditions:
+        - tableExists: 
+            tableName: owners
+      changes:
+        - loadData:
+            encoding: UTF-8
+            file: db/changelog/owners.csv
+            separator: ','
+            tableName: owners
+
+  - changeSet:
+      id: loadData-pets
+      author: stchan
+      preConditions:
+        - tableExists: 
+            tableName: pets
+      changes:
+        - loadData:
+            encoding: UTF-8
+            file: db/changelog/pets.csv
+            separator: ','
+            tableName: pets
+
+  - changeSet:
+      id: loadData-visits
+      author: stchan
+      preConditions:
+        - tableExists: 
+            tableName: visits
+      changes:
+        - loadData:
+            encoding: UTF-8
+            file: db/changelog/visits.csv
+            separator: ','
+            tableName: visits

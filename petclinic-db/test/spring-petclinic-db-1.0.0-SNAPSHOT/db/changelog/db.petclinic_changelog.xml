@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+    <changeSet author="stchan" id="createTable-owners">
+        <createTable tableName="owners">
+            <column autoIncrement="true" name="id" type="INT(10) UNSIGNED">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="first_name" type="VARCHAR(30)"/>
+            <column name="last_name" type="VARCHAR(30)"/>
+            <column name="address" type="VARCHAR(255)"/>
+            <column name="city" type="VARCHAR(80)"/>
+            <column name="telephone" type="VARCHAR(20)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="stchan" id="createTable-pets">
+        <createTable tableName="pets">
+            <column autoIncrement="true" name="id" type="INT(10) UNSIGNED">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="name" type="VARCHAR(30)"/>
+            <column name="birth_date" type="date"/>
+            <column name="type_id" type="INT(10) UNSIGNED">
+                <constraints nullable="false"/>
+            </column>
+            <column name="owner_id" type="INT(10) UNSIGNED">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="stchan" id="createTable-specialties">
+        <createTable tableName="specialties">
+            <column autoIncrement="true" name="id" type="INT(10) UNSIGNED">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="name" type="VARCHAR(80)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="stchan" id="createTable-types">
+        <createTable tableName="types">
+            <column autoIncrement="true" name="id" type="INT(10) UNSIGNED">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="name" type="VARCHAR(80)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="stchan" id="createTable-vet_specialties">
+        <createTable tableName="vet_specialties">
+            <column name="vet_id" type="INT(10) UNSIGNED">
+                <constraints nullable="false"/>
+            </column>
+            <column name="specialty_id" type="INT(10) UNSIGNED">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="stchan" id="createTable-vets">
+        <createTable tableName="vets">
+            <column autoIncrement="true" name="id" type="INT(10) UNSIGNED">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="first_name" type="VARCHAR(30)"/>
+            <column name="last_name" type="VARCHAR(30)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="stchan" id="createTable-visits">
+        <createTable tableName="visits">
+            <column autoIncrement="true" name="id" type="INT(10) UNSIGNED">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="pet_id" type="INT(10) UNSIGNED">
+                <constraints nullable="false"/>
+            </column>
+            <column name="visit_date" type="date"/>
+            <column name="description" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="stchan" id="addForeignKeyConstraint-pets_ibfk_1">
+        <addForeignKeyConstraint baseColumnNames="owner_id" baseTableName="pets" constraintName="pets_ibfk_1" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="owners"/>
+    </changeSet>
+    <changeSet author="stchan" id="addForeignKeyConstraint-pets_ibfk_2">
+        <addForeignKeyConstraint baseColumnNames="type_id" baseTableName="pets" constraintName="pets_ibfk_2" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="types"/>
+    </changeSet>
+    <changeSet author="stchan" id="addForeignKeyConstraint-vet_specialties_ibfk_1">
+        <addForeignKeyConstraint baseColumnNames="vet_id" baseTableName="vet_specialties" constraintName="vet_specialties_ibfk_1" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="vets"/>
+    </changeSet>
+    <changeSet author="stchan" id="addForeignKeyConstraint-vet_specialties_ibfk_2">
+        <addForeignKeyConstraint baseColumnNames="specialty_id" baseTableName="vet_specialties" constraintName="vet_specialties_ibfk_2" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="specialties"/>
+    </changeSet>
+    <changeSet author="stchan" id="addForeignKeyConstraint-visits_ibfk_1">
+        <addForeignKeyConstraint baseColumnNames="pet_id" baseTableName="visits" constraintName="visits_ibfk_1" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="pets"/>
+    </changeSet>
+    <changeSet author="stchan" id="addUniqueConstraint-vet_id">
+        <addUniqueConstraint columnNames="vet_id, specialty_id" constraintName="vet_id" deferrable="false" disabled="false" initiallyDeferred="false" tableName="vet_specialties"/>
+    </changeSet>
+    <changeSet author="stchan" id="createIndex-owners-last_name">
+        <createIndex indexName="last_name" tableName="owners" unique="false">
+            <column name="last_name"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="stchan" id="createIndex-vets-last_name">
+        <createIndex indexName="last_name" tableName="vets" unique="false">
+            <column name="last_name"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="stchan" id="createIndex-pets-name">
+        <createIndex indexName="name" tableName="pets" unique="false">
+            <column name="name"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="stchan" id="createIndex-specialties-name">
+        <createIndex indexName="name" tableName="specialties" unique="false">
+            <column name="name"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="stchan" id="createIndex-types-name">
+        <createIndex indexName="name" tableName="types" unique="false">
+            <column name="name"/>
+        </createIndex>
+    </changeSet>
+</databaseChangeLog>
